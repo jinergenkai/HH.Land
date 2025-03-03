@@ -1,5 +1,11 @@
 basePath: /api
 definitions:
+  models.GeoJSON:
+    properties:
+      coordinates: {}
+      type:
+        type: string
+    type: object
   models.Land:
     properties:
       area:
@@ -7,22 +13,9 @@ definitions:
       id:
         type: string
       location:
-        $ref: '#/definitions/models.Polygon'
+        $ref: '#/definitions/models.GeoJSON'
       name:
         type: string
-      type:
-        type: string
-    type: object
-  models.Polygon:
-    properties:
-      coordinates:
-        items:
-          items:
-            items:
-              type: number
-            type: array
-          type: array
-        type: array
       type:
         type: string
     type: object
@@ -33,7 +26,46 @@ info:
   title: Land Service API
   version: "1.0"
 paths:
-  /api/lands:
+  /get-bound:
+    get:
+      consumes:
+      - application/json
+      description: Gọi API của Guland để lấy dữ liệu ranh giới theo tọa độ
+      parameters:
+      - description: Latitude
+        in: query
+        name: lat
+        required: true
+        type: string
+      - description: Longitude
+        in: query
+        name: lng
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Lấy thông tin ranh giới từ bên thứ ba
+      tags:
+      - Lands
+  /land:
     get:
       description: Trả về danh sách tất cả các vùng đất
       produces:
@@ -46,6 +78,38 @@ paths:
               $ref: '#/definitions/models.Land'
             type: array
       summary: Lấy danh sách vùng đất
+      tags:
+      - Lands
+    post:
+      consumes:
+      - application/json
+      description: Tạo một vùng đất mới với tọa độ GeoJSON
+      parameters:
+      - description: Dữ liệu vùng đất
+        in: body
+        name: land
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Thêm vùng đất mới
       tags:
       - Lands
 swagger: "2.0"

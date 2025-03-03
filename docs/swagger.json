@@ -9,7 +9,65 @@
     "host": "localhost:9000",
     "basePath": "/api",
     "paths": {
-        "/api/lands": {
+        "/get-bound": {
+            "get": {
+                "description": "Gọi API của Guland để lấy dữ liệu ranh giới theo tọa độ",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lands"
+                ],
+                "summary": "Lấy thông tin ranh giới từ bên thứ ba",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Latitude",
+                        "name": "lat",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Longitude",
+                        "name": "lng",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/land": {
             "get": {
                 "description": "Trả về danh sách tất cả các vùng đất",
                 "produces": [
@@ -30,10 +88,66 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Tạo một vùng đất mới với tọa độ GeoJSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lands"
+                ],
+                "summary": "Thêm vùng đất mới",
+                "parameters": [
+                    {
+                        "description": "Dữ liệu vùng đất",
+                        "name": "land",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
+        "models.GeoJSON": {
+            "type": "object",
+            "properties": {
+                "coordinates": {},
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Land": {
             "type": "object",
             "properties": {
@@ -44,30 +158,10 @@
                     "type": "string"
                 },
                 "location": {
-                    "$ref": "#/definitions/models.Polygon"
+                    "$ref": "#/definitions/models.GeoJSON"
                 },
                 "name": {
                     "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Polygon": {
-            "type": "object",
-            "properties": {
-                "coordinates": {
-                    "type": "array",
-                    "items": {
-                        "type": "array",
-                        "items": {
-                            "type": "array",
-                            "items": {
-                                "type": "number"
-                            }
-                        }
-                    }
                 },
                 "type": {
                     "type": "string"

@@ -13,7 +13,17 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// CreateLand godoc
 // @Summary Thêm vùng đất mới
+// @Description Tạo một vùng đất mới với tọa độ GeoJSON
+// @Tags Lands
+// @Accept json
+// @Produce json
+// @Param land body models.Land true "Dữ liệu vùng đất"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /land [post]
 func CreateLand(c *gin.Context) {
 	var newLand models.Land
 
@@ -44,7 +54,7 @@ func CreateLand(c *gin.Context) {
 // @Tags Lands
 // @Produce json
 // @Success 200 {array} models.Land
-// @Router /api/lands [get]
+// @Router /land [get]
 func GetLands(c *gin.Context) {
 	var lands []models.Land
 

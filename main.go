@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"land_service/database"
 	_ "land_service/docs"
 	"land_service/handlers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -20,15 +22,40 @@ import (
 // @BasePath /api
 
 func main() {
-	// Khởi tạo database
 	database.InitDB()
 
-	// Tạo router với Gin
 	r := gin.Default()
 
+	config := cors.Config{
+		AllowOrigins:     []string{"http://localhost:3039"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}
+	r.Use(cors.New(config))
+
+	// Log tất cả request để debug
+	r.Use(func(c *gin.Context) {
+		log.Println("🔥 Request từ:", c.Request.Method, c.Request.RequestURI, "Origin:", c.Request.Header.Get("Origin"))
+		c.Next()
+	})
+
+	// Thêm middleware CORS trước các route
+	// r.Use(CORSMiddleware())
+
+	// Ví dụ API test
+	r.GET("/test", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "CORS OK!"})
+	})
+
 	// Định nghĩa route
-	r.POST("/api/lands", handlers.CreateLand)
-	r.GET("/api/lands", handlers.GetLands)
+	r.POST("/api/land", handlers.CreateLand)
+	r.GET("/api/land", handlers.GetLands)
+
+	// Định nghĩa route gọi API bên thứ 3
+	r.GET("/api/get-bound", handlers.GetBoundFromThirdParty)
 
 	// Route Swagger UI
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

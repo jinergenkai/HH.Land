@@ -12,16 +12,11 @@ import (
 
 var DB *mongo.Database
 
-// InitDB khởi tạo kết nối đến MongoDB
 func InitDB() {
 	// mongoURI := os.Getenv("MONGO_URI")
 	mongoURI := "mongodb://admin:password@localhost:27017"
 
 	clientOptions := options.Client().ApplyURI(mongoURI)
-
-	// print mongoURI
-	fmt.Println("🔗 URI MongoDB:", mongoURI)
-
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal("❌ Lỗi tạo client MongoDB:", err)
@@ -36,12 +31,11 @@ func InitDB() {
 		log.Fatal("❌ Không thể kết nối MongoDB:", err)
 	}
 
-	// Gán database sau khi chắc chắn đã kết nối
-	DB = client.Database("land_db")
+	DB = client.Database("hh-land")
 	fmt.Println("✅ Kết nối MongoDB thành công!")
 }
 
-// GetCollection trả về một collection cụ thể
+// Get Collection
 func GetCollection(name string) *mongo.Collection {
 	if DB == nil {
 		log.Fatal("❌ Database chưa được khởi tạo!")
