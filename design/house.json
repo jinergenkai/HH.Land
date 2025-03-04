@@ -1,0 +1,24 @@
+{
+  "_id": "65b4d5cfa4b0b3f9bcb0f9a1",
+  "name": "nhà",
+  "location": {
+    "type": "Polygon",
+    "coordinates": [
+      [[108.43277771025897, 12.670308723578795], [108.43294803053143, 12.670223674549522], [108.43289103358984, 12.670124886795266], [108.4327180311084, 12.670212225639565]]
+    ]
+  },
+  "type": "ResidentialLand",
+  "area": 1000,
+  "elevation": 15.2,
+  "crop_stage": {
+    "crop_type": "Lúa mùa",
+    "planted_date": "2024-02-15",
+    "fertilized": true,
+    "days_since_planted": 30,
+    "pesticide_sprayed": ["thuốc ốc", "thuốc cỏ"]
+  },
+  "metadata": {
+    "water_source": "Tự nhiên",
+    "last_updated": "2024-02-25T12:00:00Z"
+  }
+}

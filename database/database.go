@@ -14,7 +14,7 @@ var DB *mongo.Database
 
 func InitDB() {
 	// mongoURI := os.Getenv("MONGO_URI")
-	mongoURI := "mongodb://admin:password@localhost:27017"
+	mongoURI := "mongodb://admin:password@mongo_land:27017"
 
 	clientOptions := options.Client().ApplyURI(mongoURI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
