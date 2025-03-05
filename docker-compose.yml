@@ -12,6 +12,8 @@ services:
       - mongo_land
     environment:
       MONGO_URI: "mongodb://admin:password@mongo_land:27017/"
+    networks:
+      - kong-net 
   
   mongo_land:
     image: mongo:8.0
@@ -27,3 +29,7 @@ services:
 
 volumes:
   mongo_data:
+
+networks:
+  kong-net:
+    external: true
