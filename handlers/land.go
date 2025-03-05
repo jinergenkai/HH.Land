@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // CreateLand godoc
@@ -80,4 +81,39 @@ func GetLands(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, lands)
+}
+
+// @Summary Xóa vùng đất theo ID
+// @Description Xóa vùng đất dựa trên ID được cung cấp
+// @Tags Lands
+// @Param id path string true "ID của vùng đất cần xóa"
+// @Router /land/{id} [delete]
+func DeleteLand(c *gin.Context) {
+	landID := c.Param("id")
+
+	// Kiểm tra ID có hợp lệ không (MongoDB ObjectID)
+	objID, err := primitive.ObjectIDFromHex(landID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID không hợp lệ"})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	landCollection := database.GetCollection("lands")
+
+	// Xóa vùng đất theo ID
+	result, err := landCollection.DeleteOne(ctx, bson.M{"_id": objID})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Lỗi khi xóa vùng đất"})
+		return
+	}
+
+	if result.DeletedCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Không tìm thấy vùng đất"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Xóa thành công"})
 }

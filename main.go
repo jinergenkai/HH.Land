@@ -53,6 +53,7 @@ func main() {
 	// Định nghĩa route
 	r.POST("/api/land", handlers.CreateLand)
 	r.GET("/api/land", handlers.GetLands)
+	r.DELETE("/api/land/:id", handlers.DeleteLand)
 
 	// Định nghĩa route gọi API bên thứ 3
 	r.GET("/api/get-bound", handlers.GetBoundFromThirdParty)

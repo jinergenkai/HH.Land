@@ -112,4 +112,17 @@ paths:
       summary: Thêm vùng đất mới
       tags:
       - Lands
+  /land/{id}:
+    delete:
+      description: Xóa vùng đất dựa trên ID được cung cấp
+      parameters:
+      - description: ID của vùng đất cần xóa
+        in: path
+        name: id
+        required: true
+        type: string
+      responses: {}
+      summary: Xóa vùng đất theo ID
+      tags:
+      - Lands
 swagger: "2.0"

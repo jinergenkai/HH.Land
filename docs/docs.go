@@ -142,6 +142,25 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/land/{id}": {
+            "delete": {
+                "description": "Xóa vùng đất dựa trên ID được cung cấp",
+                "tags": [
+                    "Lands"
+                ],
+                "summary": "Xóa vùng đất theo ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID của vùng đất cần xóa",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
