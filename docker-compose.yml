@@ -13,7 +13,7 @@ services:
     environment:
       MONGO_URI: "mongodb://admin:password@mongo_land:27017/"
     networks:
-      - kong-net 
+      - kong_net 
   
   mongo_land:
     image: mongo:8.0
@@ -26,10 +26,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - mongo_data:/data/db
+    networks:
+      - kong_net
 
 volumes:
   mongo_data:
 
 networks:
-  kong-net:
+  kong_net:
     external: true

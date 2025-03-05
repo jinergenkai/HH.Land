@@ -19,7 +19,7 @@ import (
 // @version 1.0
 // @description API sử dụng Gin & Swagger
 // @host localhost:9000
-// @BasePath /api
+// @BasePath /land/api
 
 func main() {
 	database.InitDB()
@@ -51,15 +51,15 @@ func main() {
 	})
 
 	// Định nghĩa route
-	r.POST("/api/land", handlers.CreateLand)
-	r.GET("/api/land", handlers.GetLands)
-	r.DELETE("/api/land/:id", handlers.DeleteLand)
+	r.POST("land/api/land", handlers.CreateLand)
+	r.GET("land/api/land", handlers.GetLands)
+	r.DELETE("land/api/land/:id", handlers.DeleteLand)
 
 	// Định nghĩa route gọi API bên thứ 3
-	r.GET("/api/get-bound", handlers.GetBoundFromThirdParty)
+	r.GET("land/api/get-bound", handlers.GetBoundFromThirdParty)
 
 	// Route Swagger UI
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.GET("land/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Chạy server
 	fmt.Println("🚀 Server chạy trên cổng 9000...")
